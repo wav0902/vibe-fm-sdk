@@ -1,0 +1,17 @@
+name: build
+on: workflow_dispatch
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Zig
+        run: |
+          curl -L https://ziglang.org/download/0.13.0/zig-linux-x86_64-0.13.0.tar.xz | tar xJ
+          echo "$PWD/zig-linux-x86_64-0.13.0" >> $GITHUB_PATH
+      - name: Build
+        run: sh tools/build.sh examples/hello
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vibe-build
+          path: build/
